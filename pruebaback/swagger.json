@@ -1,0 +1,1988 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Documentation",
+        "description": "Este es un servidor de la prueba transversal de BACKEND. Puede obtener más información sobre Swagger en [http://swagger.io](http://swagger.io) o en [irc.freenode.net, #swagger](http://swagger.io/irc/). <br><br>Para este ejemplo, puede utilizar las siguientes claves de API para métodos:<ul><li>Método GET - Authorization Bearer: `get`</li><li>Método POST - Authorization Bearer: `post`</li><li>Método PATCH - Authorization Bearer: `patch`</li><li>Método PUT - Authorization Bearer: `put`</li><li>Método DELETE - Authorization Bearer: `delete`</li></ul>.",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost/pruebaback/v1",
+            "description": "Class Server"
+        }
+    ],
+    "paths": {
+        "/carrusel/": {
+            "get": {
+                "tags": [
+                    "Carrusel"
+                ],
+                "summary": "Obtener todos los carruseles",
+                "responses": {
+                    "200": {
+                        "description": "Lista de carruseles",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CarruselResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Carrusel"
+                ],
+                "summary": "Crear nuevo objeto",
+                "description": "Crea un objeto básico, incluye: id, imagen,titulo y descripción",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CarruselCreate"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Creación exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResultadoOk"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Error: Conflicto",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ConflictoExiste"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error: Faltan datos en el body"
+                    },
+                    "401": {
+                        "description": "Error: Sin Autorización"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuthPost": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Carrusel"
+                ],
+                "summary": "Modifica los datos del carrusel",
+                "description": "Se puede modificar el campo `imagen`,`titulo` y `descripcion` a convenir.",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CarruselUpdate"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Actualización exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResultadoOk"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error: Falta ingresar datos de carrusel"
+                    },
+                    "401": {
+                        "description": "Error: Sin Autorización"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuthPut": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "Carrusel"
+                ],
+                "summary": "Apagar o Encender un objeto",
+                "description": "Apaga o Enciende un objeto básico, deja activo en false o true respectivamente.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "ID del objeto",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "name": "accion",
+                        "in": "query",
+                        "description": "La acción es requerida para la ejecución.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "apagar",
+                                "encender"
+                            ],
+                            "default": "apagar"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Cambio exitoso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResultadoOk"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error: No implementado"
+                    },
+                    "401": {
+                        "description": "Error: Sin Autorización"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuthPatch": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Carrusel"
+                ],
+                "summary": "Eliminar un objeto",
+                "description": "Elimina un objeto básico, lo borra de la base de datos.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "ID del objeto",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Eliminación exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResultadoOk"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Error: Sin Autorización"
+                    },
+                    "404": {
+                        "description": "Error: No encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ConflictoExiste"
+                                }
+                            }
+                        }
+                    },
+                    "405": {
+                        "description": "Error: No implementado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuthDelete": []
+                    }
+                ]
+            }
+        },
+        "/nuestrahistoria/": {
+            "get": {
+                "tags": [
+                    "Nuestra Historia"
+                ],
+                "summary": "Retorna todos los objetos",
+                "description": "Retorna una lista de objetos del tipo básico, incluye: id, texto,imagen y activo",
+                "responses": {
+                    "200": {
+                        "description": "Respuesta exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HistoriaResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Error: Sin Autorización"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuthGet": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Nuestra Historia"
+                ],
+                "summary": "Crear nuevo objeto",
+                "description": "Crea un objeto básico, incluye: id, texto e imagen",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/HistoriaCreate"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Creación exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResultadoOk"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Error: Conflicto",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ConflictoExiste"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error: Faltan datos en el body"
+                    },
+                    "401": {
+                        "description": "Error: Sin Autorización"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuthPost": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "Nuestra Historia"
+                ],
+                "summary": "Apagar o Encender un objeto",
+                "description": "Apaga o Enciende un objeto básico, deja activo en false o true respectivamente.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "ID del objeto",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "name": "accion",
+                        "in": "query",
+                        "description": "La acción es requerida para la ejecución.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "apagar",
+                                "encender"
+                            ],
+                            "default": "apagar"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Cambio exitoso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResultadoOk"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error: incompleto"
+                    },
+                    "401": {
+                        "description": "Error: Sin Autorización"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuthPatch": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Nuestra Historia"
+                ],
+                "summary": "Modifica los datos de un objeto",
+                "description": "Se puede modificar los campos `texto` e `imagen` a convenir.",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/HistoriaUpdate"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Actualización exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResultadoOk"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error: Falta ingresar datos de nuestra historia"
+                    },
+                    "401": {
+                        "description": "Error: Sin Autorización"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuthPut": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Nuestra Historia"
+                ],
+                "summary": "Eliminar un objeto",
+                "description": "Elimina un objeto básico, lo borra de la base de datos.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "ID del objeto",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Eliminación exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResultadoOk"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Error: Sin Autorización"
+                    },
+                    "404": {
+                        "description": "Error: No encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ConflictoExiste"
+                                }
+                            }
+                        }
+                    },
+                    "405": {
+                        "description": "Error: No implementado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuthDelete": []
+                    }
+                ]
+            }
+        },
+        "/proxentrenamientos/": {
+            "get": {
+                "tags": [
+                    "Proximos Entrenamientos"
+                ],
+                "summary": "Retorna todos los objetos",
+                "description": "Retorna una lista de objetos del tipo básico, incluye: id, fecha,hora,lugar de entrenamiento(nombre,calle y comuna) y activo",
+                "responses": {
+                    "200": {
+                        "description": "Respuesta exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProxEntrenamientosResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Error: Sin Autorización"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuthGet": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Proximos Entrenamientos"
+                ],
+                "summary": "Crear nuevo objeto",
+                "description": "Crea un objeto básico, incluye: id, fecha,hora, id de lugar de entrenamiento y activo. El id de lugar debe existir en base de datos.",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProxEntrenamientosCreate"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Creación exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResultadoOk"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Error: Conflicto",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ConflictoExiste"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error: Faltan datos en el body o Error: Lugar Id inválido"
+                    },
+                    "401": {
+                        "description": "Error: Sin Autorización"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuthPost": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "Proximos Entrenamientos"
+                ],
+                "summary": "Apagar o Encender un objeto",
+                "description": "Apaga o Enciende un objeto básico, deja activo en false o true respectivamente.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "ID del objeto",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "name": "accion",
+                        "in": "query",
+                        "description": "La acción es requerida para la ejecución.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "apagar",
+                                "encender"
+                            ],
+                            "default": "apagar"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Cambio exitoso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResultadoOk"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error: incompleto"
+                    },
+                    "401": {
+                        "description": "Error: Sin Autorización"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuthPatch": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Proximos Entrenamientos"
+                ],
+                "summary": "Modifica los datos de un objeto",
+                "description": "Se puede modificar los campo `fecha` , `hora` e `idlugar` a conveniencia",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProxEntrenamientosUpdate"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Actualización exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResultadoOk"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error: Falta ingresar datos de proximos entrenamientos o Error: Lugar Id inválido"
+                    },
+                    "401": {
+                        "description": "Error: Sin Autorización"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuthPut": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Proximos Entrenamientos"
+                ],
+                "summary": "Eliminar un objeto",
+                "description": "Elimina un objeto básico, lo borra de la base de datos.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "ID del objeto",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Eliminación exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResultadoOk"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Error: Sin Autorización"
+                    },
+                    "404": {
+                        "description": "Error: No encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ConflictoExiste"
+                                }
+                            }
+                        }
+                    },
+                    "405": {
+                        "description": "Error: No implementado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuthDelete": []
+                    }
+                ]
+            }
+        },
+        "/jugadores/": {
+            "get": {
+                "tags": [
+                    "Nuestros Jugadores"
+                ],
+                "summary": "Retorna todos los objetos",
+                "description": "Retorna una lista de objetos del tipo básico, incluye: id, nombre y activo",
+                "responses": {
+                    "200": {
+                        "description": "Respuesta exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/JugadoresResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Error: Sin Autorización"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuthGet": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Nuestros Jugadores"
+                ],
+                "summary": "Crear nuevo objeto",
+                "description": "Crea un objeto básico, incluye: id, nombre, apellido , profesion y id de posición",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/JugadoresCreate"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Creación exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResultadoOk"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Error: Conflicto",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ConflictoExiste"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error: Faltan datos en el body o Error: Posición ID inválido"
+                    },
+                    "401": {
+                        "description": "Error: Sin Autorización"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuthPost": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "Nuestros Jugadores"
+                ],
+                "summary": "Apagar o Encender un objeto",
+                "description": "Apaga o Enciende un objeto básico, deja activo en false o true respectivamente.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "ID del objeto",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "name": "accion",
+                        "in": "query",
+                        "description": "La acción es requerida para la ejecución.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "apagar",
+                                "encender"
+                            ],
+                            "default": "apagar"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Cambio exitoso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResultadoOk"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error: incompleto"
+                    },
+                    "401": {
+                        "description": "Error: Sin Autorización"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuthPatch": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Nuestros Jugadores"
+                ],
+                "summary": "Modifica los datos de un objeto",
+                "description": "Se pueden modificar los campos `nombre` , `apellido` , `profesion` y `posicion_id`",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/JugadoresUpdate"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Actualización exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResultadoOk"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error: Falta ingresar datos de jugador o Error: Posicion Id inválido"
+                    },
+                    "401": {
+                        "description": "Error: Sin Autorización"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuthPut": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Nuestros Jugadores"
+                ],
+                "summary": "Eliminar un objeto",
+                "description": "Elimina un objeto básico, lo borra de la base de datos.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "ID del objeto",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Eliminación exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResultadoOk"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Error: Sin Autorización"
+                    },
+                    "404": {
+                        "description": "Error: No encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ConflictoExiste"
+                                }
+                            }
+                        }
+                    },
+                    "405": {
+                        "description": "Error: No implementado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuthDelete": []
+                    }
+                ]
+            }
+        },
+        "/rrss/": {
+            "get": {
+                "tags": [
+                    "Redes Sociales"
+                ],
+                "summary": "Retorna todos los objetos",
+                "description": "Retorna una lista de objetos del tipo básico, incluye: id, nombre,icono,valor y activo",
+                "responses": {
+                    "200": {
+                        "description": "Respuesta exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RedesSocialesResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Error: Sin Autorización"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuthGet": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Redes Sociales"
+                ],
+                "summary": "Crear nuevo objeto",
+                "description": "Crea un objeto básico, incluye: id, nombre , icono y valor",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RedesSocialesCreate"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Creación exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResultadoOk"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Error: Conflicto",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ConflictoExiste"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error: Faltan datos en el body"
+                    },
+                    "401": {
+                        "description": "Error: Sin Autorización"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuthPost": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "Redes Sociales"
+                ],
+                "summary": "Apagar o Encender un objeto",
+                "description": "Apaga o Enciende un objeto básico, deja activo en false o true respectivamente.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "ID del objeto",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "name": "accion",
+                        "in": "query",
+                        "description": "La acción es requerida para la ejecución.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "apagar",
+                                "encender"
+                            ],
+                            "default": "apagar"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Cambio exitoso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResultadoOk"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error: incompleto"
+                    },
+                    "401": {
+                        "description": "Error: Sin Autorización"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuthPatch": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Redes Sociales"
+                ],
+                "summary": "Modifica los datos de un objeto",
+                "description": "Se puede modificar los campos `nombre`,`icono` y `valor` segun se necesite",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RedesSocialesUpdate"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Actualización exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResultadoOk"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error: Falta ingresar datos de redes sociales"
+                    },
+                    "401": {
+                        "description": "Error: Sin Autorización"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuthPut": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Redes Sociales"
+                ],
+                "summary": "Eliminar un objeto",
+                "description": "Elimina un objeto básico, lo borra de la base de datos.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "ID del objeto",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Eliminación exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResultadoOk"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Error: Sin Autorización"
+                    },
+                    "404": {
+                        "description": "Error: No encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ConflictoExiste"
+                                }
+                            }
+                        }
+                    },
+                    "405": {
+                        "description": "Error: No implementado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuthDelete": []
+                    }
+                ]
+            }
+        },
+        "/sobrenosotros/": {
+            "get": {
+                "tags": [
+                    "Sobre Nosotros"
+                ],
+                "summary": "Retorna todos los objetos",
+                "description": "Retorna una lista de objetos del tipo básico, incluye: id, nombre y activo",
+                "responses": {
+                    "200": {
+                        "description": "Respuesta exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SobreNosotrosResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Error: Sin Autorización"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuthGet": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Sobre Nosotros"
+                ],
+                "summary": "Crear nuevo objeto",
+                "description": "Crea un objeto básico, incluye: id, logo_color y descripcion",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SobreNosotrosCreate"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Creación exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResultadoOk"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Error: Conflicto",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ConflictoExiste"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error: Faltan datos en el body"
+                    },
+                    "401": {
+                        "description": "Error: Sin Autorización"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuthPost": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "Sobre Nosotros"
+                ],
+                "summary": "Apagar o Encender un objeto",
+                "description": "Apaga o Enciende un objeto básico, deja activo en false o true respectivamente.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "ID del objeto",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "name": "accion",
+                        "in": "query",
+                        "description": "La acción es requerida para la ejecución.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "apagar",
+                                "encender"
+                            ],
+                            "default": "apagar"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Cambio exitoso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResultadoOk"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error: incompleto"
+                    },
+                    "401": {
+                        "description": "Error: Sin Autorización"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuthPatch": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Sobre Nosotros"
+                ],
+                "summary": "Modifica los datos de un objeto",
+                "description": "Se pueden modificar los campos `logo_color` y `descripcion` según se necesite",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SobreNosotrosUpdate"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Actualización exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResultadoOk"
+                                }
+                            }
+                        }
+                    }
+                    ,
+                    "400": {
+                        "description": "Error: Falta ingresar datos de sobre nosotros"
+                    },
+                    "401": {
+                        "description": "Error: Sin Autorización"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuthPut": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Sobre Nosotros"
+                ],
+                "summary": "Eliminar un objeto",
+                "description": "Elimina un objeto básico, lo borra de la base de datos.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "ID del objeto",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Eliminación exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResultadoOk"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Error: Sin Autorización"
+                    },
+                    "404": {
+                        "description": "Error: No encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ConflictoExiste"
+                                }
+                            }
+                        }
+                    },
+                    "405": {
+                        "description": "Error: No implementado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuthDelete": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuthGet": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            },
+            "bearerAuthPost": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            },
+            "bearerAuthPatch": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            },
+            "bearerAuthPut": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            },
+            "bearerAuthDelete": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        },
+        "schemas": {
+            "ResultadoOk": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "boolean",
+                        "example": true
+                    }
+                }
+            },
+            "ConflictoExiste": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "boolean",
+                        "example": false
+                    }
+                }
+            },
+            "CarruselItem": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 0
+                    },
+                    "imagen": {
+                        "type": "string",
+                        "example": "https://imagen.com/imagen.jpg"
+                    },
+                    "titulo": {
+                        "type": "string",
+                        "example": "Imagen impactante"
+                    },
+                    "descripcion": {
+                        "type": "string",
+                        "example": "Descripcion"
+                    },
+                    "activo": {
+                        "type": "boolean",
+                        "example": true
+                    }
+                }
+            },
+            "CarruselUpdate": {
+                "type": "object",
+                "properties": {
+                    "carrusel": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "imagen": {
+                                "type": "string",
+                                "example": "https://imagen.com/imagen.jpg"
+                            },
+                            "titulo": {
+                                "type": "string",
+                                "example": "Titulo de la imagen"
+                            },
+                            "descripcion": {
+                                "type": "string",
+                                "example": "descripcion de la imagen"
+                            }
+                        },
+                        "required": [
+                            "id"
+                        ]
+                    }
+                },
+                "required": [
+                    "carrusel"
+                ]
+            },
+            "CarruselResponse": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/CarruselItem"
+                        }
+                    }
+                }
+            },
+            "CarruselCreate": {
+                "type": "object",
+                "properties": {
+                    "imagen": {
+                        "type": "string",
+                        "example": "https://imagen.com/imagen.jpg"
+                    },
+                    "titulo": {
+                        "type": "string",
+                        "example": "titulo imagen"
+                    },
+                    "descripcion": {
+                        "type": "string",
+                        "example": "descripcion de la imagen"
+                    }
+                },
+                "required": [
+                    "nombre",
+                    "imagen",
+                    "descripcion"
+                ]
+            },
+            "HistoriaItem": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 0
+                    },
+                    "texto": {
+                        "type": "string",
+                        "example": "Texto nuestra historia"
+                    },
+                    "imagen": {
+                        "type": "string",
+                        "example": "https://imagen.com/imagen.jpg"
+                    },
+                    "activo": {
+                        "type": "boolean",
+                        "example": true
+                    }
+                }
+            },
+            "HistoriaUpdate": {
+                "type": "object",
+                "properties": {
+                    "historia": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "integer",
+                                "example": 3
+                            },
+                            "texto": {
+                                "type": "string",
+                                "example": "Titulo de la imagen"
+                            },
+                            "imagen": {
+                                "type": "string",
+                                "example": "https://imagen.com/imagen.jpg"
+                            }
+                        },
+                        "required": [
+                            "id"
+                        ]
+                    }
+                },
+                "required": [
+                    "historia"
+                ]
+            },
+            "HistoriaResponse": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/HistoriaItem"
+                        }
+                    }
+                }
+            },
+            "HistoriaCreate": {
+                "type": "object",
+                "properties": {
+                    "texto": {
+                        "type": "string",
+                        "example": "titulo imagen"
+                    },
+                    "imagen": {
+                        "type": "string",
+                        "example": "https://imagen.com/imagen.jpg"
+                    }
+                },
+                "required": [
+                    "texto",
+                    "imagen"
+                ]
+            },
+            "ProxEntrenamientosItem": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 0
+                    },
+                    "momento": {
+                        "type": "object",
+                        "properties": {
+                            "fecha": {
+                                "type": "integer",
+                                "example": 3
+                            },
+                            "horario": {
+                                "type": "string",
+                                "example": "00:00 - 04:00"
+                            }
+                        }
+                    },
+                    "lugar": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "integer",
+                                "format": "int64",
+                                "example": 1
+                            },
+                            "nombre": {
+                                "type": "string",
+                                "example": "Lugar Base"
+                            },
+                            "direccion": {
+                                "type": "object",
+                                "properties": {
+                                    "calle": {
+                                        "type": "string",
+                                        "example": "Los pinos 1111"
+                                    },
+                                    "comuna": {
+                                        "type": "string",
+                                        "example": "Santiago"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "activo": {
+                        "type": "boolean",
+                        "example": true
+                    }
+                }
+            },
+            "ProxEntrenamientosUpdate": {
+                "type": "object",
+                "properties": {
+                    "entrenamientoproximo": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "integer",
+                                "example": 3
+                            },
+                            "fecha": {
+                                "type": "string",
+                                "example": "12/06/2024"
+                            },
+                            "hora": {
+                                "type": "string",
+                                "example": "07:30 - 10:30"
+                            },
+                            "lugarid": {
+                                "type": "integer",
+                                "example": 2
+                            }
+                        },
+                        "required": [
+                            "id"
+                        ]
+                    }
+                },
+                "required": [
+                    "entrenamientoproximo"
+                ]
+            },
+            "ProxEntrenamientosResponse": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ProxEntrenamientosItem"
+                        }
+                    }
+                }
+            },
+            "ProxEntrenamientosCreate": {
+                "type": "object",
+                "properties": {
+                    "fecha": {
+                        "type": "string",
+                        "example": "13/06/2024"
+                    },
+                    "hora": {
+                        "type": "string",
+                        "example": "10:00 - 11:00"
+                    },
+                    "lugarid": {
+                        "type": "integer",
+                        "example": 2
+                    }
+                },
+                "required": [
+                    "fecha",
+                    "hora",
+                    "lugarid"
+                ]
+            },
+            "JugadoresItem": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "personal": {
+                        "type": "object",
+                        "properties": {
+                            "nombre": {
+                                "type": "string",
+                                "example": "Juan Pedro"
+                            },
+                            "profesion": {
+                                "type": "string",
+                                "example": "Ingeniero agronomo"
+                            }
+                        }
+                    },
+                    "posicion": {
+                        "type": "object",
+                        "properties": {
+                            "abreviado": {
+                                "type": "string",
+                                "example": "PO"
+                            },
+                            "nombre": {
+                                "type": "string",
+                                "example": "Portero"
+                            },
+                            "redes_sociales": {
+                                "type": "object",
+                                "properties": {
+                                    "rrss_nombre": {
+                                        "type": "string",
+                                        "example": "Instagram"
+                                    },
+                                    "rrss_icono": {
+                                        "type": "string",
+                                        "example": "fa fa-instagram"
+                                    },
+                                    "rrss_valor": {
+                                        "type": "string",
+                                        "example": "www.instagram.com/@test"
+                                    },
+                                }
+                            }
+                        }
+                    },
+                    "activo": {
+                        "type": "boolean",
+                        "example": true
+                    }
+                }
+            },
+            "JugadoresUpdate": {
+                "type": "object",
+                "properties": {
+                    "jugador": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "integer",
+                                "example": 3
+                            },
+                            "nombre": {
+                                "type": "string",
+                                "example": "Alan"
+                            },
+                            "apellido": {
+                                "type": "string",
+                                "example": "Pulido"
+                            },
+                            "profesion": {
+                                "type": "string",
+                                "example": "Ingeniero agronomo"
+                            },
+                            "posicion_id": {
+                                "type": "integer",
+                                "example": 2
+                            }
+                        },
+                        "required": [
+                            "id"
+                        ]
+                    }
+                },
+                "required": [
+                    "jugador"
+                ]
+            },
+            "JugadoresResponse": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/JugadoresItem"
+                        }
+                    }
+                }
+            },
+            "JugadoresCreate": {
+                "type": "object",
+                "properties": {
+                    "nombre": {
+                        "type": "string",
+                        "example": "Juan"
+                    },
+                    "apellido": {
+                        "type": "string",
+                        "example": "Peralta"
+                    },
+                    "profesion": {
+                        "type": "string",
+                        "example": "Ingeniero agronomo"
+                    },
+                    "posicionId": {
+                        "type": "integer",
+                        "example": 2
+                    }
+                },
+                "required": [
+                    "nombre",
+                    "apellido",
+                    "profesion",
+                    "posicionId"
+                ]
+            },
+            "RedesSocialesItem": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "nombre": {
+                        "type": "string",
+                        "example": "Facebook"
+                    },
+                    "icono": {
+                        "type": "string",
+                        "example": "fa fa-facebook"
+                    },
+                    "valor": {
+                        "type": "string",
+                        "example": "https://facebook.com"
+                    },
+                    "activo": {
+                        "type": "boolean",
+                        "example": true
+                    }
+                }
+            },
+            "RedesSocialesUpdate": {
+                "type": "object",
+                "properties": {
+                    "redes": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "integer",
+                                "example": 3
+                            },
+                            "nombre": {
+                                "type": "string",
+                                "example": "Telegram"
+                            },
+                            "icono": {
+                                "type": "string",
+                                "example": "fa fa-telegram?"
+                            },
+                            "valor": {
+                                "type": "string",
+                                "example": "https://telegram.com"
+                            }
+                        },
+                        "required": [
+                            "id"
+                        ]
+                    }
+                },
+                "required": [
+                    "redes"
+                ]
+            },
+            "RedesSocialesResponse": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/RedesSocialesItem"
+                        }
+                    }
+                }
+            },
+            "RedesSocialesCreate": {
+                "type": "object",
+                "properties": {
+                    "nombre": {
+                        "type": "string",
+                        "example": "TIKTOK"
+                    },
+                    "icono": {
+                        "type": "string",
+                        "example": "fa-fa-fa"
+                    },
+                    "valor": {
+                        "type": "string",
+                        "example": "www.com"
+                    }
+                },
+                "required": [
+                    "nombre",
+                    "icono",
+                    "valor"
+                ]
+            },
+            "SobreNosotrosItem": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "logo_color": {
+                        "type": "string",
+                        "example": "https://telegram.com/imagen.png"
+                    },
+                    "descripcion": {
+                        "type": "string",
+                        "example": "Nosotros somos un club x."
+                    },
+                    "activo": {
+                        "type": "boolean",
+                        "example": true
+                    }
+                }
+            },
+            "SobreNosotrosUpdate": {
+                "type": "object",
+                "properties": {
+                    "sobrenosotros": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "integer",
+                                "example": 3
+                            },
+                            "logo_color": {
+                                "type": "string",
+                                "example": "imagen.png"
+                            },
+                            "descripcion": {
+                                "type": "string",
+                                "example": "somos otro club X"
+                            }
+                        },
+                        "required": [
+                            "id"
+                        ]
+                    }
+                },
+                "required": [
+                    "sobrenosotros"
+                ]
+            },
+            "SobreNosotrosResponse": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SobreNosotrosItem"
+                        }
+                    }
+                }
+            },
+            "SobreNosotrosCreate": {
+                "type": "object",
+                "properties": {
+                    "logo_color": {
+                        "type": "string",
+                        "example": "www.google.com"
+                    },
+                    "descripcion": {
+                        "type": "string",
+                        "example": "Nosotros somos un club x."
+                    }
+                },
+                "required": [
+                    "logo_color",
+                    "descripcion"
+                ]
+            }
+        }
+    },
+    "security": [
+        {
+            "bearerAuthGet": []
+        }
+    ]
+}
